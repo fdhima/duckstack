@@ -1,3 +1,5 @@
 requests
 pandas
 logging
+boto3
+pyarrow
