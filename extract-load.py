@@ -52,7 +52,7 @@ def load_data(df: pd.DataFrame):
     # Upload to bucket
     s3.put_object(
         Bucket="data-lake",
-        Key="processed/2026/03/03/data.parquet",
+        Key="bronze/data.parquet",
         Body=buffer,
         ContentType="application/octet-stream"
     )
@@ -79,7 +79,7 @@ def read_data():
     # Query Parquet file we just uploaded
     df = con.execute("""
         SELECT * 
-        FROM read_parquet('s3://data-lake/processed/2026/03/03/data.parquet')
+        FROM read_parquet('s3://data-lake/bronze/data.parquet')
     """).df()
 
     logging.info(f"Read {len(df)} rows from MinIO via DuckDB")
