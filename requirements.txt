@@ -3,3 +3,4 @@ pandas
 logging
 boto3
 pyarrow
+duckdb

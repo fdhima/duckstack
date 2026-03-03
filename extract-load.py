@@ -3,6 +3,7 @@ import pandas as pd
 import logging
 import io
 import boto3
+import duckdb
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -57,12 +58,44 @@ def load_data(df: pd.DataFrame):
     )
 
 
+def read_data():
+    """Read Parquet files from MinIO using DuckDB."""
+    con = duckdb.connect()
+
+    # Install/load HTTPFS extension
+    con.execute("INSTALL httpfs;")
+    con.execute("LOAD httpfs;")
+
+    # Configure MinIO as S3 endpoint
+    con.execute("""
+        SET s3_endpoint='minio:9000';
+        SET s3_access_key_id='minioadmin';
+        SET s3_secret_access_key='minioadmin';
+        SET s3_use_ssl=false;
+        SET s3_url_style='path';
+        SET s3_region='us-east-1';
+    """)
+
+    # Query Parquet file we just uploaded
+    df = con.execute("""
+        SELECT * 
+        FROM read_parquet('s3://data-lake/processed/2026/03/03/data.parquet')
+    """).df()
+
+    logging.info(f"Read {len(df)} rows from MinIO via DuckDB")
+    print(df.head())
+    return df
+
 def main():
     try:
         # Ingest/Extract raw data
         raw_data = extract_data()
 
-        load_data(raw_data)                
+        load_data(raw_data)
+
+        # Read back using DuckDB
+        read_data()
+        logging.info("DuckDB read complete")
     except Exception as e:
         print(e)
         logging.error(f"Pipeline failed: {e}")
