@@ -22,8 +22,3 @@ Build a production-grade analytics platform that runs entirely on your local mac
 4.  **Asset-Based Orchestration:** Use **Dagster** to manage the pipeline. Define "Software Defined Assets" so recruiters can see the visual lineage from API to Dashboard.
 5.  **Data Quality as Code:** Implement schema validation and "freshness" checks using dbt-tests to ensure the local warehouse doesn't ingest corrupt data.
 6.  **Performance Tuning:** Demonstrate DuckDB's speed by processing at least 1 million rows of historical data (available via public datasets like NYC Taxi or NOAA Weather).
-
-## Why this boosts your CV
-*   **DuckDB Mastery:** DuckDB is the industry's current favorite for cost-effective analytics. Being an early adopter shows you follow modern trends.
-*   **Architectural Depth:** Proving you can stitch together 5+ different OSS tools into a functional platform is more impressive to senior engineers than using a single "all-in-one" paid cloud service.
-*   **Local-First Workflow:** It shows you can build, test, and iterate without a company credit card, making you a highly efficient and self-sufficient engineer.
