@@ -28,3 +28,12 @@ services:
       mc version enable local/data-lake;
       echo 'Bucket created and versioning enabled.';
       "
+
+  pipeline:
+    build: .
+    depends_on:
+      - minio
+      - minio-init
+    environment:
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin

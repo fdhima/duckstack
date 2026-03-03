@@ -42,7 +42,7 @@ def load_data(df: pd.DataFrame):
     # Configure S3 client for MinIO
     s3 = boto3.client(
         "s3",
-        endpoint_url="http://localhost:9000",  # Your MinIO endpoint
+        endpoint_url="http://minio:9000",  # Your MinIO endpoint
         aws_access_key_id="minioadmin",
         aws_secret_access_key="minioadmin",
         region_name="us-east-1"
