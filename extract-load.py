@@ -31,6 +31,7 @@ def extract_data() -> pd.DataFrame:
     df["time"] = pd.to_datetime(df["time"])
     return df
 
+
 def load_data(df: pd.DataFrame):
     """Loads the raw data into MinIO bucket (Bronze layer)."""
     # Convert DataFrame to Parquet in memory
