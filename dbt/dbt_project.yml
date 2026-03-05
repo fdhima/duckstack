@@ -33,5 +33,9 @@ models:
   dbt_duckstack:
     silver:
       materialized: table
+      post-hook:
+        - "COPY (SELECT * FROM {{ this }}) TO 's3://data-lake/silver/weather_silver.parquet' (FORMAT PARQUET)"
     gold:
       materialized: table
+      post-hook:
+        - "COPY (SELECT * FROM {{ this }}) TO 's3://data-lake/gold/weather_gold.parquet' (FORMAT PARQUET)"

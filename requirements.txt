@@ -4,3 +4,5 @@ logging
 boto3
 pyarrow
 duckdb
+dbt-core
+dbt-duckdb
