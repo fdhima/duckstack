@@ -3,7 +3,7 @@ dbt_duckstack:
   outputs:
     dev:
       type: duckdb
-      path: /tmp/dbt.duckdb
+      path: /usr/app/dbt/dbt.duckdb
       extensions:
         - httpfs
 
