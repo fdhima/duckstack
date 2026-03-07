@@ -50,4 +50,4 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin
-    command: ["dbt", "run"]
+    command: ["sh", "-c", "dbt run && dbt test"]

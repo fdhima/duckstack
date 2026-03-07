@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: weather_silver
+    description: "Cleaned hourly weather data for Berlin"
+    columns:
+      - name: observed_at
+        description: "Original timestamp of the observation"
+        tests:
+          - not_null
+          - unique
+
+      - name: date
+        description: "Date truncated to day"
+        tests:
+          - not_null
+
+      - name: hour
+        description: "Hour of the observation (0-23)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+
+      - name: temperature_celsius
+        description: "Air temperature at 2m height in Celsius"
+        tests:
+          - not_null
+
+      - name: precipitation
+        description: "Precipitation in mm"
+        tests:
+          - not_null
+
+      - name: is_freezing
+        description: "True if temperature is below 0C"
+        tests:
+          - not_null
+
+      - name: is_precipitation
+        description: "True if precipitation > 0"
+        tests:
+          - not_null
+
+      - name: city
+        description: "City name"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Berlin']
+
+      - name: latitude
+        description: "Latitude of the station"
+        tests:
+          - not_null
+
+      - name: longitude
+        description: "Longitude of the station"
+        tests:
+          - not_null

@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: weather_gold
+    description: "Daily aggregated weather statistics for Berlin"
+    columns:
+      - name: date
+        description: "The calendar date of the aggregation"
+        tests:
+          - not_null
+          - unique
+
+      - name: city
+        description: "City name"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Berlin']
+
+      - name: month
+        description: "Month number (1-12)"
+        tests:
+          - not_null
+
+      - name: day_of_week
+        description: "Day of the week (0=Sunday, 6=Saturday)"
+        tests:
+          - not_null
+
+      - name: min_temp_celsius
+        description: "Minimum temperature of the day in Celsius"
+        tests:
+          - not_null
+
+      - name: max_temp_celsius
+        description: "Maximum temperature of the day in Celsius"
+        tests:
+          - not_null
+
+      - name: avg_temp_celsius
+        description: "Average temperature of the day in Celsius"
+        tests:
+          - not_null
+
+      - name: total_precipitation_mm
+        description: "Total precipitation for the day in mm"
+        tests:
+          - not_null
+
+      - name: rainy_hours
+        description: "Number of hours with precipitation > 0"
+        tests:
+          - not_null
+
+      - name: freezing_hours
+        description: "Number of hours with temperature below 0C"
+        tests:
+          - not_null
+
+      - name: weather_category
+        description: "Categorical label based on average daily temperature"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Freezing', 'Cold', 'Mild', 'Warm']
