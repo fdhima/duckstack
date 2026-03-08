@@ -6,7 +6,9 @@ import boto3
 import duckdb
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 # Define the API endpoint and parameters
@@ -17,8 +19,9 @@ API_PARAMS = {
     "start_date": "2026-01-01",
     "end_date": "2026-01-31",
     "hourly": "temperature_2m,precipitation",
-    "timezone": "Europe/Berlin"
+    "timezone": "Europe/Berlin",
 }
+
 
 def extract_data() -> pd.DataFrame:
     """Extracts data from the Open-Meteo API."""
@@ -47,7 +50,7 @@ def load_data(df: pd.DataFrame):
         endpoint_url="http://minio:9000",  # Your MinIO endpoint
         aws_access_key_id="minioadmin",
         aws_secret_access_key="minioadmin",
-        region_name="us-east-1"
+        region_name="us-east-1",
     )
 
     # Upload to bucket
@@ -55,7 +58,7 @@ def load_data(df: pd.DataFrame):
         Bucket="data-lake",
         Key="bronze/data.parquet",
         Body=buffer,
-        ContentType="application/octet-stream"
+        ContentType="application/octet-stream",
     )
 
 
@@ -87,6 +90,7 @@ def read_data():
     print(df.head())
     return df
 
+
 def main():
     try:
         # Ingest/Extract raw data
@@ -100,6 +104,7 @@ def main():
     except Exception as e:
         print(e)
         logging.error(f"Pipeline failed: {e}")
+
 
 if __name__ == "__main__":
     main()

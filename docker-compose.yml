@@ -29,15 +29,6 @@ services:
       echo 'Bucket created and versioning enabled.';
       "
 
-  # pipeline:
-  #   build: .
-  #   depends_on:
-  #     - minio
-  #     - minio-init
-  #   environment:
-  #     AWS_ACCESS_KEY_ID: minioadmin
-  #     AWS_SECRET_ACCESS_KEY: minioadmin
-
   dagster-webserver:
     build: .
     container_name: dagster-webserver
@@ -76,13 +67,9 @@ services:
     volumes:
       - ./dbt:/usr/app/dbt
     working_dir: /usr/app/dbt
-    # depends_on:
-    #   dagster-webserver:
-    #     condition: service_completed_successfully
     environment:
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin
-    # command: ["sh", "-c", "dbt run && dbt test"]
 
 volumes:
   dagster-home:

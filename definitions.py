@@ -57,10 +57,14 @@ def silver_weather(context: AssetExecutionContext):
     """Clean and enrich raw bronze data into the silver layer via dbt."""
     result = subprocess.run(
         [
-            "dbt", "run",
-            "--select", "weather_silver",
-            "--project-dir", "/usr/app/dbt",
-            "--profiles-dir", "/usr/app/dbt",
+            "dbt",
+            "run",
+            "--select",
+            "weather_silver",
+            "--project-dir",
+            "/usr/app/dbt",
+            "--profiles-dir",
+            "/usr/app/dbt",
         ],
         capture_output=True,
         text=True,
@@ -75,10 +79,14 @@ def gold_weather(context: AssetExecutionContext):
     """Aggregate silver data into the gold reporting layer via dbt."""
     result = subprocess.run(
         [
-            "dbt", "run",
-            "--select", "weather_gold",
-            "--project-dir", "/usr/app/dbt",
-            "--profiles-dir", "/usr/app/dbt",
+            "dbt",
+            "run",
+            "--select",
+            "weather_gold",
+            "--project-dir",
+            "/usr/app/dbt",
+            "--profiles-dir",
+            "/usr/app/dbt",
         ],
         capture_output=True,
         text=True,
@@ -93,9 +101,12 @@ def dbt_tests(context: AssetExecutionContext):
     """Run dbt tests to validate data quality across silver and gold layers."""
     result = subprocess.run(
         [
-            "dbt", "test",
-            "--project-dir", "/usr/app/dbt",
-            "--profiles-dir", "/usr/app/dbt",
+            "dbt",
+            "test",
+            "--project-dir",
+            "/usr/app/dbt",
+            "--profiles-dir",
+            "/usr/app/dbt",
         ],
         capture_output=True,
         text=True,
