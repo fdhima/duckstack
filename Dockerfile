@@ -1,23 +1,29 @@
-FROM python:3.11-slim
+FROM python:3.10-slim
 
-WORKDIR /app
+RUN pip install \
+    dagster \
+    dagster-graphql \
+    dagster-webserver \
+    dagster-postgres \
+    dagster-docker \
+    requests \
+    pandas \
+    boto3 \
+    pyarrow \
+    duckdb \ 
+    duckdb \ 
+    dbt-core \
+    dbt-duckdb
 
-# Install system dependencies for pyarrow
-RUN apt-get update && apt-get install -y gcc && rm -rf /var/lib/apt/lists/*
+ENV DAGSTER_HOME=/opt/dagster/dagster_home
+RUN mkdir -p $DAGSTER_HOME
+COPY dagster.yaml workspace.yaml $DAGSTER_HOME
 
-ENV VIRTUAL_ENV=/opt/venv
+WORKDIR /opt/dagster/app
+COPY definitions.py .
 
-# Create the virtual environment
-RUN python3 -m venv $VIRTUAL_ENV
+EXPOSE 3000
+HEALTHCHECK --interval=10s --timeout=5s --start-period=30s --retries=5 \
+  CMD curl -f http://localhost:3000/server_info || exit 1
 
-# Add the virtual environment's bin directory to PATH
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-# Copy requirements and install dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-
-COPY extract-load.py .
-
-CMD ["python3", "extract-load.py"]
+CMD ["dagster", "dev", "-h", "0.0.0.0", "-p", "3000", "-f", "definitions.py"]

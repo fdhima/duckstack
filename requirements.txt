@@ -6,3 +6,5 @@ pyarrow
 duckdb
 dbt-core
 dbt-duckdb
+dagster
+dagster-webserver
