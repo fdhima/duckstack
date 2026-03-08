@@ -210,3 +210,5 @@ __marimo__/
 # MinIO
 minio-data/.minio.sys/*
 minio-data/.minio.sys/
+
+minio-data/*
