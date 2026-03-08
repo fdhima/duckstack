@@ -38,14 +38,14 @@ services:
   #     AWS_ACCESS_KEY_ID: minioadmin
   #     AWS_SECRET_ACCESS_KEY: minioadmin
 
-  dagster:
+  dagster-webserver:
     build: .
     container_name: dagster-webserver
+    command: dagster-webserver -h 0.0.0.0 -p 3000 -w /opt/dagster/dagster_home/workspace.yaml
     restart: unless-stopped
     ports:
       - "3000:3000"
     volumes:
-      - ./dbt:/usr/app/dbt
       - dagster-home:/opt/dagster/dagster_home
     depends_on:
       - minio
@@ -54,20 +54,19 @@ services:
       AWS_SECRET_ACCESS_KEY: minioadmin
       DAGSTER_HOME: /opt/dagster/dagster_home
 
-  # dagster-daemon:
-  #   build: .
-  #   container_name: dagster-daemon
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./dbt:/usr/app/dbt
-  #     - dagster-home:/opt/dagster/dagster_home
-  #   depends_on:
-  #     - minio
-  #   environment:
-  #     AWS_ACCESS_KEY_ID: minioadmin
-  #     AWS_SECRET_ACCESS_KEY: minioadmin
-  #     DAGSTER_HOME: /opt/dagster/dagster_home
-  #   command: ["dagster-daemon", "run"]
+  dagster-daemon:
+    build: .
+    container_name: dagster-daemon
+    command: dagster-daemon run -w /opt/dagster/dagster_home/workspace.yaml
+    restart: unless-stopped
+    volumes:
+      - dagster-home:/opt/dagster/dagster_home
+    depends_on:
+      - minio
+    environment:
+      AWS_ACCESS_KEY_ID: minioadmin
+      AWS_SECRET_ACCESS_KEY: minioadmin
+      DAGSTER_HOME: /opt/dagster/dagster_home
 
   dbt:
     build: ./dbt
@@ -75,13 +74,13 @@ services:
     volumes:
       - ./dbt:/usr/app/dbt
     working_dir: /usr/app/dbt
-    depends_on:
-      dagster:
-        condition: service_healthy
+    # depends_on:
+    #   dagster-webserver:
+    #     condition: service_completed_successfully
     environment:
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin
-    command: ["sh", "-c", "dbt run && dbt test"]
+    # command: ["sh", "-c", "dbt run && dbt test"]
 
 volumes:
   dagster-home:
